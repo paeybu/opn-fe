@@ -12,7 +12,13 @@ const PatientTab = ({ currentTab, total, onClickAdd }: IProps) => {
   return (
     <HStack>
       {totalArr.map((_, i) => (
-        <Center key={i} border='solid 1px #aaa' w='100px' h='100px'>
+        <Center
+          key={i}
+          border='solid 1px #999'
+          w='100px'
+          h='100px'
+          borderRadius='sm'
+        >
           <VStack>
             <Text>Patient</Text>
             <Text color='opnYellow' fontWeight='bold' fontSize='xl'>
