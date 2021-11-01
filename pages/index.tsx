@@ -25,12 +25,17 @@ export interface iPatientData {
   gender: string;
   age: number;
   occupation: string;
+  locations: any;
 }
 
 const Home: NextPage = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [totalTab, setTotalTab] = useState(0);
   const [patientData, setPatientData] = useState([]);
+  const [isAdding, setIsAdding] = useState(false);
+  const [gender, setGender] = useState(null);
+  const [age, setAge] = useState(null);
+  const [occupation, setOccupation] = useState('');
 
   useEffect(() => {
     const fetch = async () => {
@@ -46,7 +51,9 @@ const Home: NextPage = () => {
   }, [patientData]);
 
   const onClickAdd = () => {
-    alert('Add');
+    setIsAdding(true);
+    setTotalTab((cur) => cur + 1);
+    setCurrentTab((cur) => cur + 1);
   };
 
   const currentPatientData: iPatientData = patientData[currentTab - 1];
@@ -57,7 +64,7 @@ const Home: NextPage = () => {
         <title>COVID Timeline Generator</title>
       </Head>
       <Box bg='bg' color='fontColor'>
-        <Container maxW='container.xl' pt='8'>
+        <Container maxW='container.xl' pt='8' minH='100vh'>
           <Center mb='8'>
             <Heading color='opnYellow'>COVID Timeline Generator</Heading>
           </Center>
@@ -66,14 +73,35 @@ const Home: NextPage = () => {
               currentTab={currentTab}
               total={totalTab}
               onClickAdd={onClickAdd}
+              onClickTab={(tab) => setCurrentTab(tab)}
             />
           </Box>
-          <Box mb='4'>
-            <PatientInfo data={currentPatientData} />
-          </Box>
-          <Box mb='4'>
-            <TimeLine data={currentPatientData} />
-          </Box>
+          {(isAdding || patientData?.length > 0) && (
+            <>
+              <Box mb='4'>
+                <PatientInfo
+                  gender={gender}
+                  setGender={setGender}
+                  age={age}
+                  setAge={setAge}
+                  occupation={occupation}
+                  setOccupation={setOccupation}
+                  data={currentPatientData}
+                />
+              </Box>
+              <Box mb='4'>
+                <TimeLine
+                  gender={gender}
+                  setGender={setGender}
+                  age={age}
+                  setAge={setAge}
+                  occupation={occupation}
+                  setOccupation={setOccupation}
+                  data={currentPatientData}
+                />
+              </Box>
+            </>
+          )}
         </Container>
       </Box>
     </>

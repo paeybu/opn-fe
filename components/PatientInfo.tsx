@@ -7,17 +7,37 @@ import {
   Text,
   Select,
   Input,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react';
 import { iPatientData } from '../pages';
+import { removePatient } from '../services/patientService';
 
-const PatientInfo = ({ data }: iPatientData) => {
+const PatientInfo = ({
+  data,
+  gender,
+  age,
+  occupation,
+  setGender,
+  setAge,
+  setOccupation,
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
   return (
     <>
       <HStack justifyContent='space-between'>
         <Heading color='opnYellow' mb='4'>
           Patient Information
         </Heading>
-        <Button colorScheme='red'>Remove Patient</Button>
+        <Button colorScheme='red' onClick={onOpen}>
+          Remove Patient
+        </Button>
       </HStack>
 
       <Box border='solid 1px #999' p='4' borderRadius='sm'>
@@ -25,10 +45,11 @@ const PatientInfo = ({ data }: iPatientData) => {
           <Box flex='2'>
             <Text>Gender</Text>
             <Select
+              onChange={(e) => setGender(e.target.value)}
               placeholder='Select Gender'
               bg='white'
               color='black'
-              value={data?.gender}
+              value={data?.gender || gender}
             >
               <option value='Male'>Male</option>
               <option value='Female'>Female</option>
@@ -42,6 +63,7 @@ const PatientInfo = ({ data }: iPatientData) => {
               color='black'
               type='number'
               placeholder='Input age'
+              onChange={(e) => setAge(e.target.value)}
             />
           </Box>
           <Box flex='6'>
@@ -51,10 +73,41 @@ const PatientInfo = ({ data }: iPatientData) => {
               bg='white'
               color='black'
               placeholder='Input occupation'
+              onChange={(e) => setOccupation(e.target.value)}
             />
           </Box>
         </HStack>
       </Box>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Delete Patient
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme='red'
+                onClick={async () => await removePatient(data?._id)}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

@@ -5,9 +5,10 @@ interface IProps {
   currentTab: number;
   total: number;
   onClickAdd(): any;
+  onClickTab(tab: number): any;
 }
 
-const PatientTab = ({ currentTab, total, onClickAdd }: IProps) => {
+const PatientTab = ({ currentTab, total, onClickAdd, onClickTab }: IProps) => {
   const totalArr = Array.from({ length: total });
   return (
     <HStack>
@@ -19,7 +20,7 @@ const PatientTab = ({ currentTab, total, onClickAdd }: IProps) => {
           h='100px'
           borderRadius='sm'
         >
-          <VStack>
+          <VStack cursor='pointer' onClick={() => onClickTab(i + 1)}>
             <Text>Patient</Text>
             <Text color='opnYellow' fontWeight='bold' fontSize='xl'>
               {i + 1}
