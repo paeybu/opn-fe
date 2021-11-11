@@ -25,6 +25,7 @@ import styles from '../styles/Home.module.css';
 import { getPatients } from '../services/patientService';
 import PatientInfo from '../components/PatientInfo';
 import TimeLine from '../components/TimeLine';
+import { useForm } from 'react-hook-form';
 
 export interface iPatientData {
   gender: string;
@@ -35,11 +36,36 @@ export interface iPatientData {
 
 const Home: NextPage = () => {
   const [currentTab, setCurrentTab] = useState(1);
+  const [locations, setLocations] = useState([]);
   const [totalTab, setTotalTab] = useState(0);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
 
   const onClickAdd = () => {
     setTotalTab((cur) => cur + 1);
   };
+
+  const onAddEntry = () => {
+    const { from, to, detail, location_type, location_name } = watch();
+    setLocations([
+      ...locations,
+      {
+        from,
+        to,
+        detail,
+        location_type,
+        location_name,
+      },
+    ]);
+  };
+
+  const removeTab = () => setTotalTab((cur) => cur - 1);
 
   return (
     <>
@@ -51,33 +77,51 @@ const Home: NextPage = () => {
           <Center mb='8'>
             <Heading color='opnYellow'>COVID Timeline Generator</Heading>
           </Center>
-          <HStack align='flex-start'>
-            <Tabs>
+          <Tabs colorScheme='yellow' variant='enclosed'>
+            <HStack align='flex-start'>
               <TabList>
                 {Array.from(Array(totalTab)).map((x, i) => (
-                  <Tab>{i + 1}</Tab>
+                  <Tab>Patient {i + 1}</Tab>
                 ))}
               </TabList>
-              <TabPanels>
-                {Array.from(Array(totalTab)).map((x, i) => (
-                  <TabPanel>{i + 1}</TabPanel>
-                ))}
-              </TabPanels>
-            </Tabs>
-            <Center
-              bg='#eee'
-              borderRadius='50%'
-              color='black'
-              w='20px'
-              h='20px'
-              cursor='pointer'
-              position='relative'
-              top='12px'
-              onClick={onClickAdd}
-            >
-              +
-            </Center>
-          </HStack>
+              <Center
+                bg='#eee'
+                borderRadius='50%'
+                color='black'
+                w='20px'
+                h='20px'
+                cursor='pointer'
+                position='relative'
+                top='12px'
+                onClick={onClickAdd}
+              >
+                +
+              </Center>
+            </HStack>
+            <TabPanels>
+              {Array.from(Array(totalTab)).map((x, i) => (
+                <TabPanel>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <PatientInfo
+                      register={register}
+                      i={i}
+                      removeTab={removeTab}
+                    />
+                    <TimeLine
+                      onAddEntry={onAddEntry}
+                      watch={watch}
+                      register={register}
+                      locations={locations}
+                      i={i}
+                    />
+                    <Button colorScheme='yellow' type='submit'>
+                      Submit
+                    </Button>
+                  </form>
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
         </Container>
       </Box>
     </>

@@ -18,15 +18,7 @@ import {
 import { iPatientData } from '../pages';
 import { removePatient } from '../services/patientService';
 
-const PatientInfo = ({
-  data,
-  gender,
-  age,
-  occupation,
-  setGender,
-  setAge,
-  setOccupation,
-}) => {
+const PatientInfo = ({ register, removeTab, i }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   return (
@@ -45,11 +37,10 @@ const PatientInfo = ({
           <Box flex='2'>
             <Text>Gender</Text>
             <Select
-              onChange={(e) => setGender(e.target.value)}
+              {...register('gender')}
               placeholder='Select Gender'
               bg='white'
               color='black'
-              value={data?.gender || gender}
             >
               <option value='Male'>Male</option>
               <option value='Female'>Female</option>
@@ -58,22 +49,20 @@ const PatientInfo = ({
           <Box flex='1'>
             <Text>Age</Text>
             <Input
-              value={data?.age}
+              {...register('age')}
               bg='white'
               color='black'
               type='number'
               placeholder='Input age'
-              onChange={(e) => setAge(e.target.value)}
             />
           </Box>
           <Box flex='6'>
             <Text>Occupation</Text>
             <Input
-              value={data?.occupation}
               bg='white'
               color='black'
               placeholder='Input occupation'
-              onChange={(e) => setOccupation(e.target.value)}
+              {...register('occupation')}
             />
           </Box>
         </HStack>

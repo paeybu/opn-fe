@@ -4,8 +4,8 @@ import { iPatientData } from '../pages';
 import TimeLineData from './TimeLineData';
 import TimeLineForm from './TimeLineForm';
 
-const TimeLine = ({ data, age, occupation, gender }) => {
-  const { locations } = data || {};
+const TimeLine = ({ watch, register, onAddEntry, locations }) => {
+  const { gender, age, occupation } = watch();
   return (
     <>
       <Heading color='opnYellow' mb='4'>
@@ -23,11 +23,11 @@ const TimeLine = ({ data, age, occupation, gender }) => {
               w='200px'
             >
               <VStack spacing='0'>
-                <Text>{data?.gender || gender}</Text>
+                <Text>{gender}</Text>
                 <Text fontSize='xl' fontWeight='bold'>
-                  {data?.age || age} years old
+                  {age} years old
                 </Text>
-                <Text>{data?.occupation || occupation}</Text>
+                <Text>{occupation}</Text>
               </VStack>
             </Center>
           </Center>
@@ -41,12 +41,12 @@ const TimeLine = ({ data, age, occupation, gender }) => {
           </Heading>
           <HStack>
             {locations?.map((loc) => (
-              <Text key={loc?._id}>{loc?.location}</Text>
+              <Text key={loc?._id}>{loc?.location_name}</Text>
             ))}
           </HStack>
         </Box>
         <Box flex='2'>
-          <TimeLineForm />
+          <TimeLineForm onAddEntry={onAddEntry} register={register} />
         </Box>
       </HStack>
     </>

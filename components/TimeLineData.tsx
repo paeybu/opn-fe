@@ -43,12 +43,11 @@ const TimeLineData = ({ data }: iTimeLineData) => {
         >
           <HStack>
             <Text color='opnYellow' mr='4'>
-              {dayjs(data?.timefrom).format('HH:mm')} -{' '}
-              {dayjs(data?.timeto).format('HH:mm')}
+              {dayjs(data?.from).format('HH:mm')} - {data?.to}
             </Text>
             <VStack>
               <Text>{data?.detail}</Text>
-              <Text color='opnBlue'>{data?.location}</Text>
+              <Text color='opnBlue'>{data?.location_name}</Text>
             </VStack>
           </HStack>
           <Text color='white' ml='auto' cursor='pointer' p='4'>
