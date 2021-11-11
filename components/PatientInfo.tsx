@@ -37,7 +37,7 @@ const PatientInfo = ({ register, removeTab, i }) => {
           <Box flex='2'>
             <Text>Gender</Text>
             <Select
-              {...register('gender')}
+              {...register(`gender.${i}`)}
               placeholder='Select Gender'
               bg='white'
               color='black'
@@ -49,7 +49,7 @@ const PatientInfo = ({ register, removeTab, i }) => {
           <Box flex='1'>
             <Text>Age</Text>
             <Input
-              {...register('age')}
+              {...register(`age.${i}`)}
               bg='white'
               color='black'
               type='number'
@@ -62,7 +62,7 @@ const PatientInfo = ({ register, removeTab, i }) => {
               bg='white'
               color='black'
               placeholder='Input occupation'
-              {...register('occupation')}
+              {...register(`occupation.${i}`)}
             />
           </Box>
         </HStack>

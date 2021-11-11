@@ -4,7 +4,7 @@ import { iPatientData } from '../pages';
 import TimeLineData from './TimeLineData';
 import TimeLineForm from './TimeLineForm';
 
-const TimeLine = ({ watch, register, onAddEntry, locations }) => {
+const TimeLine = ({ watch, register, onAddEntry, locations, i }) => {
   const { gender, age, occupation } = watch();
   return (
     <>
@@ -23,11 +23,11 @@ const TimeLine = ({ watch, register, onAddEntry, locations }) => {
               w='200px'
             >
               <VStack spacing='0'>
-                <Text>{gender}</Text>
+                <Text>{gender[i]}</Text>
                 <Text fontSize='xl' fontWeight='bold'>
-                  {age} years old
+                  {age[i]} years old
                 </Text>
-                <Text>{occupation}</Text>
+                <Text>{occupation[i]}</Text>
               </VStack>
             </Center>
           </Center>
