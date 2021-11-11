@@ -18,7 +18,7 @@ const TimeLineForm = () => {
           <Input bg='white' color='black' type='datetime-local' />
         </Box>
         <Box>
-          <Text>From</Text>
+          <Text>To</Text>
           <Input bg='white' color='black' type='time' />
         </Box>
       </HStack>

@@ -10,11 +10,16 @@ import {
   HStack,
   Input,
   Button,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
 } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PatientTab from '../components/PatientTab';
 import styles from '../styles/Home.module.css';
 import { getPatients } from '../services/patientService';
@@ -31,32 +36,10 @@ export interface iPatientData {
 const Home: NextPage = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [totalTab, setTotalTab] = useState(0);
-  const [patientData, setPatientData] = useState([]);
-  const [isAdding, setIsAdding] = useState(false);
-  const [gender, setGender] = useState(null);
-  const [age, setAge] = useState(null);
-  const [occupation, setOccupation] = useState('');
-
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await getPatients();
-      setPatientData(data);
-    };
-
-    fetch();
-  }, []);
-
-  useEffect(() => {
-    setTotalTab(patientData.length);
-  }, [patientData]);
 
   const onClickAdd = () => {
-    setIsAdding(true);
     setTotalTab((cur) => cur + 1);
-    setCurrentTab((cur) => cur + 1);
   };
-
-  const currentPatientData: iPatientData = patientData[currentTab - 1];
 
   return (
     <>
@@ -68,40 +51,33 @@ const Home: NextPage = () => {
           <Center mb='8'>
             <Heading color='opnYellow'>COVID Timeline Generator</Heading>
           </Center>
-          <Box mb='8'>
-            <PatientTab
-              currentTab={currentTab}
-              total={totalTab}
-              onClickAdd={onClickAdd}
-              onClickTab={(tab) => setCurrentTab(tab)}
-            />
-          </Box>
-          {(isAdding || patientData?.length > 0) && (
-            <>
-              <Box mb='4'>
-                <PatientInfo
-                  gender={gender}
-                  setGender={setGender}
-                  age={age}
-                  setAge={setAge}
-                  occupation={occupation}
-                  setOccupation={setOccupation}
-                  data={currentPatientData}
-                />
-              </Box>
-              <Box mb='4'>
-                <TimeLine
-                  gender={gender}
-                  setGender={setGender}
-                  age={age}
-                  setAge={setAge}
-                  occupation={occupation}
-                  setOccupation={setOccupation}
-                  data={currentPatientData}
-                />
-              </Box>
-            </>
-          )}
+          <HStack align='flex-start'>
+            <Tabs>
+              <TabList>
+                {Array.from(Array(totalTab)).map((x, i) => (
+                  <Tab>{i + 1}</Tab>
+                ))}
+              </TabList>
+              <TabPanels>
+                {Array.from(Array(totalTab)).map((x, i) => (
+                  <TabPanel>{i + 1}</TabPanel>
+                ))}
+              </TabPanels>
+            </Tabs>
+            <Center
+              bg='#eee'
+              borderRadius='50%'
+              color='black'
+              w='20px'
+              h='20px'
+              cursor='pointer'
+              position='relative'
+              top='12px'
+              onClick={onClickAdd}
+            >
+              +
+            </Center>
+          </HStack>
         </Container>
       </Box>
     </>
